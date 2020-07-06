@@ -1,0 +1,26 @@
+---
+- hosts: local
+  connection: local
+  gather_facts: no
+  - name: load variables
+    vars:
+      instance_type: t2.micro
+      image: ami-026dea5602e368e96
+      keypair: ansiblekey
+      region: us-east-2
+      count: 1
+      subnet: subnet-c7b3d08b
+      hostpath: "/etc/ansible/hosts"
+      public_ip: true
+      "
+    volume:
+      device_name: /dev/xvda
+      device_type: gp2
+      volume_size: 8 #root size
+      delete_on_termination: true
+    vars_files:
+      - aws_keys.yml
+  roles:
+    - { role: "deploy_ec2_apache" }
+    - { role: "deploy_ec2_mysql" }
+    - { role: "deploy_ec2_tomcat" }
